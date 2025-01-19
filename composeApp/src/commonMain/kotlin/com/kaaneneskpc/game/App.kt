@@ -9,44 +9,26 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaaneneskpc.game.component.GameStatus
+import com.kaaneneskpc.game.component.ScoreBoard
 import com.kaaneneskpc.game.domain.Game
 import com.kaaneneskpc.game.domain.GameStatus
-import com.kaaneneskpc.game.util.ChewyFontFamily
 import com.stevdza_san.sprite.component.drawSpriteView
 import com.stevdza_san.sprite.domain.SpriteSheet
 import com.stevdza_san.sprite.domain.SpriteSpec
@@ -278,97 +260,7 @@ fun App() {
                 )
             }
         }
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(all = 48.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "BEST: 0",
-                fontWeight = FontWeight.Bold,
-                fontSize = MaterialTheme.typography.displaySmall.fontSize,
-                fontFamily = ChewyFontFamily()
-            )
-            Text(
-                text = "0",
-                fontWeight = FontWeight.Bold,
-                fontSize = MaterialTheme.typography.displaySmall.fontSize,
-                fontFamily = ChewyFontFamily()
-            )
-        }
-
-        if (game.status == GameStatus.Idle) {
-            Box(
-                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    modifier = Modifier.height(54.dp),
-                    shape = RoundedCornerShape(size = 20.dp),
-                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
-                    onClick = {
-                        game.start()
-                        spriteState.start()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "START",
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontFamily = ChewyFontFamily()
-                    )
-                }
-            }
-        }
-
-
-        if (game.status == GameStatus.Over) {
-            Column(
-                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "GAME OVER",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = MaterialTheme.typography.displayMedium.fontSize,
-                    fontFamily = ChewyFontFamily()
-                )
-                Text(
-                    text = "SCORE: ${game.currentScore}",
-                    color = Color.White,
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                    fontFamily = ChewyFontFamily()
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                Button(
-                    modifier = Modifier.height(54.dp),
-                    shape = RoundedCornerShape(size = 20.dp),
-                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
-                    onClick = {
-                        game.restart()
-                        spriteState.start()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "START",
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontFamily = ChewyFontFamily()
-                    )
-                }
-            }
-        }
+        ScoreBoard()
+        GameStatus(game)
     }
 }
