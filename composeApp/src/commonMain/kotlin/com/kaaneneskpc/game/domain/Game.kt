@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.kaaneneskpc.game.Platform
+import com.russhwolf.settings.ObservableSettings
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlin.random.Random
 
 const val SCORE_KEY = "score"
@@ -16,11 +19,12 @@ data class Game(
     val gravity: Float = if (platform == Platform.Android) 0.8f else if (platform == Platform.iOS) 0.8f else 0.25f,
     val beeRadius: Float = 30f,
     val beeJumpImpulse: Float = if (platform == Platform.Android) -12f else if (platform == Platform.iOS) -12f else -8f,
-    val beeMaxVelocity: Float = if (platform == Platform.Android) 25f else if(platform == Platform.iOS) 20f else 20f,
+    val beeMaxVelocity: Float = if (platform == Platform.Android) 25f else if (platform == Platform.iOS) 20f else 20f,
     val pipeWidth: Float = 150f,
-    val pipeVelocity: Float = if (platform == Platform.Android) 5f else if(platform == Platform.iOS) 7f else 2.5f,
+    val pipeVelocity: Float = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f,
     val pipeGapSize: Float = if (platform == Platform.Android) 250f else 300f
-) {
+) : KoinComponent {
+    private val settings: ObservableSettings by inject()
     var status by mutableStateOf(GameStatus.Idle)
         private set
     var beeVelocity by mutableStateOf(0f)
@@ -41,21 +45,43 @@ data class Game(
         private set
     private var isFallingSoundPlayed = false
 
+    init {
+        bestScore = settings.getInt(
+            key = SCORE_KEY,
+            defaultValue = 0
+        )
+        settings.addIntListener(
+            key = SCORE_KEY,
+            defaultValue = 0
+        ) {
+            bestScore = it
+        }
+    }
+
     fun start() {
         status = GameStatus.Started
     }
 
     fun gameOver() {
         status = GameStatus.Over
+        saveScore()
     }
 
     fun jump() {
         beeVelocity = beeJumpImpulse
     }
 
+    private fun saveScore() {
+        if (currentScore > bestScore) {
+            settings.putInt(SCORE_KEY, bestScore)
+            bestScore = currentScore
+        }
+    }
+
     fun restart() {
         resetBeePosition()
         removePipes()
+        restartScore()
         start()
     }
 
@@ -69,6 +95,19 @@ data class Game(
     }
 
     fun updateGameProgress() {
+
+        pipePairs.forEach { pipePair ->
+            if (isCollision(pipePair)) {
+                gameOver()
+                return
+            }
+            if (!pipePair.scored && bee.x > pipePair.x + pipeWidth / 2) {
+                pipePair.scored = true
+                currentScore += 1
+            }
+        }
+
+
         if (bee.y < 0) {
             stopTheBee()
             return
@@ -81,6 +120,10 @@ data class Game(
         bee = bee.copy(y = bee.y + beeVelocity)
 
         spawnPipes()
+    }
+
+    private fun restartScore() {
+        currentScore = 0
     }
 
     private fun spawnPipes() {
@@ -103,6 +146,27 @@ data class Game(
             )
             pipePairs.add(newPipePair)
         }
+    }
+
+    private fun isCollision(pipePair: PipePair): Boolean {
+
+        // Check horizontal collision
+        val beeRightHedge = bee.x + bee.radius
+        val beeLeftHedge = bee.x - bee.radius
+        val pipeLeftHedge = pipePair.x - pipeWidth / 2
+        val pipeRightHedge = pipePair.x + pipeWidth / 2
+
+        val horizontalCollision = beeRightHedge > pipeLeftHedge && beeLeftHedge < pipeRightHedge
+
+        // Check if the bee is within the vertical gap
+        val beeTopHedge = bee.y - bee.radius
+        val beeBottomHedge = bee.y + bee.radius
+        val gapTopHedge = pipePair.y - pipeGapSize / 2
+        val gapBottomHedge = pipePair.y + pipeGapSize / 2
+
+        val beeInGap = beeTopHedge > gapTopHedge && beeBottomHedge < gapBottomHedge
+
+        return horizontalCollision && !beeInGap
     }
 
 

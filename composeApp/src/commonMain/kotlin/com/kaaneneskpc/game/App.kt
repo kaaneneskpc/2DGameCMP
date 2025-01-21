@@ -260,7 +260,7 @@ fun App() {
                 )
             }
         }
-        ScoreBoard()
-        GameStatus(game)
+        ScoreBoard(game)
+        GameStatus(game, backgroundOffsetX)
     }
 }

@@ -10,22 +10,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kaaneneskpc.game.domain.Game
 import com.kaaneneskpc.game.util.ChewyFontFamily
 
 @Composable
-fun ScoreBoard() {
+fun ScoreBoard(game: Game) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(all = 48.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "BEST: 0",
+            text = "BEST: ${game.bestScore}",
             fontWeight = FontWeight.Bold,
             fontSize = MaterialTheme.typography.displaySmall.fontSize,
             fontFamily = ChewyFontFamily()
         )
         Text(
-            text = "0",
+            text = "${game.currentScore}",
             fontWeight = FontWeight.Bold,
             fontSize = MaterialTheme.typography.displaySmall.fontSize,
             fontFamily = ChewyFontFamily()
