@@ -73,7 +73,7 @@ data class Game(
 
     private fun saveScore() {
         if (currentScore > bestScore) {
-            settings.putInt(SCORE_KEY, bestScore)
+            settings.putInt(SCORE_KEY, currentScore)
             bestScore = currentScore
         }
     }
