@@ -32,16 +32,16 @@ actual class AudioPlayer(context: Context) {
 
     actual fun playGameOverSound() {
         stopFallingSound()
-        soundPool.play(gameOverSound, 1f, 1f, 0, 0, 1f)
+        soundPool.play(gameOverSound, 1f, 1f, 1, 0, 1f)
     }
 
     actual fun playJumpSound() {
         stopFallingSound()
-        soundPool.play(jumpSound, 1f, 1f, 0, 0, 1f)
+        soundPool.play(jumpSound, 1f, 1f, 1, 0, 1f)
     }
 
     actual fun playFallingSound() {
-        fallingSoundId = soundPool.play(fallingSound, 1f, 1f, 0, 0, 1f)
+        fallingSoundId = soundPool.play(fallingSound, 1f, 1f, 1, 0, 1f)
     }
 
     actual fun stopFallingSound() {
@@ -50,14 +50,20 @@ actual class AudioPlayer(context: Context) {
 
     actual fun playGameSoundInLoop() {
         loopingPlayer.apply {
+            stop()
+            clearMediaItems()
             repeatMode = Player.REPEAT_MODE_ONE
-            mediaItems.getOrNull(2)?.let { setMediaItem(it) }
-            play()
+            mediaItems.getOrNull(2)?.let { 
+                setMediaItem(it)
+                prepare()
+                play()
+            }
         }
     }
 
     actual fun stopGameSound() {
         loopingPlayer.stop()
+        loopingPlayer.clearMediaItems()
         playGameOverSound()
     }
 
