@@ -87,6 +87,7 @@ fun App() {
                     stop()
                     cleanup()
                 }
+                game.cleanUp()
             }
         }
 
