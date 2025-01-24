@@ -12,6 +12,7 @@ import org.koin.dsl.module
 @OptIn(ExperimentalSettingsApi::class)
 val sharedModule = module {
     single<ObservableSettings> { Settings().makeObservable() }
+    single { com.kaaneneskpc.game.domain.Settings(get()) }
 }
 
 expect val targetModule: Module

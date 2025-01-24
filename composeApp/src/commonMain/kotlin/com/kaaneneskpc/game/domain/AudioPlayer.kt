@@ -1,6 +1,7 @@
 package com.kaaneneskpc.game.domain
 
 expect class AudioPlayer {
+    var isSoundEnabled: Boolean
     fun playGameOverSound()
     fun playJumpSound()
     fun playFallingSound()

@@ -1,6 +1,5 @@
 package com.kaaneneskpc.game
 
-
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -174,94 +173,97 @@ fun App() {
                 contentDescription = "Moving Background",
                 contentScale = ContentScale.FillHeight
             )
-        }
 
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .onGloballyPositioned {
-                    val size = it.size
-                    if (screenWidth != size.width || screenHeight != size.height) {
-                        screenWidth = size.width
-                        screenHeight = size.height
-                        game = game.copy(
-                            screenWidth = size.width,
-                            screenHeight = size.height
+            Box(modifier = Modifier.fillMaxSize()) {
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .onGloballyPositioned {
+                            val size = it.size
+                            if (screenWidth != size.width || screenHeight != size.height) {
+                                screenWidth = size.width
+                                screenHeight = size.height
+                                game = game.copy(
+                                    screenWidth = size.width,
+                                    screenHeight = size.height
+                                )
+                            }
+                        }
+                        .clickable(
+                            enabled = game.status == GameStatus.Started
+                        ) {
+                            game.jump()
+                        }
+                ) {
+                    rotate(
+                        degrees = animatedAngle,
+                        pivot = Offset(
+                            x = game.bee.x - game.beeRadius,
+                            y = game.bee.y - game.beeRadius
+                        )
+                    ) {
+                        drawSpriteView(
+                            spriteState = spriteState,
+                            spriteSpec = spriteSpec,
+                            currentFrame = currentFrame,
+                            image = sheetImage,
+                            offset = IntOffset(
+                                x = (game.bee.x - game.beeRadius).toInt(),
+                                y = (game.bee.y - game.beeRadius).toInt()
+                            )
+                        )
+                    }
+                    game.pipePairs.forEach { pipePair ->
+                        drawImage(
+                            image = pipeImage,
+                            dstOffset = IntOffset(
+                                x = (pipePair.x - game.pipeWidth / 2).toInt(),
+                                y = 0
+                            ),
+                            dstSize = IntSize(
+                                width = game.pipeWidth.toInt(),
+                                height = (pipePair.topHeight - PIPE_CAP_HEIGHT).toInt()
+                            )
+                        )
+                        drawImage(
+                            image = pipeCapImage,
+                            dstOffset = IntOffset(
+                                x = (pipePair.x - game.pipeWidth / 2).toInt(),
+                                y = (pipePair.topHeight - PIPE_CAP_HEIGHT).toInt()
+                            ),
+                            dstSize = IntSize(
+                                width = game.pipeWidth.toInt(),
+                                height = PIPE_CAP_HEIGHT.toInt()
+                            )
+                        )
+                        drawImage(
+                            image = pipeCapImage,
+                            dstOffset = IntOffset(
+                                x = (pipePair.x - game.pipeWidth / 2).toInt(),
+                                y = (pipePair.y + game.pipeGapSize / 2).toInt()
+                            ),
+                            dstSize = IntSize(
+                                width = game.pipeWidth.toInt(),
+                                height = PIPE_CAP_HEIGHT.toInt()
+                            )
+                        )
+                        drawImage(
+                            image = pipeImage,
+                            dstOffset = IntOffset(
+                                x = (pipePair.x - game.pipeWidth / 2).toInt(),
+                                y = (pipePair.y + game.pipeGapSize / 2 + PIPE_CAP_HEIGHT).toInt()
+                            ),
+                            dstSize = IntSize(
+                                width = game.pipeWidth.toInt(),
+                                height = (pipePair.bottomHeight - PIPE_CAP_HEIGHT).toInt()
+                            )
                         )
                     }
                 }
-                .clickable {
-                    if (game.status == GameStatus.Started) {
-                        game.jump()
-                    }
-                }
-        ) {
-            rotate(
-                degrees = animatedAngle,
-                pivot = Offset(
-                    x = game.bee.x - game.beeRadius,
-                    y = game.bee.y - game.beeRadius
-                )
-            ) {
-                drawSpriteView(
-                    spriteState = spriteState,
-                    spriteSpec = spriteSpec,
-                    currentFrame = currentFrame,
-                    image = sheetImage,
-                    offset = IntOffset(
-                        x = (game.bee.x - game.beeRadius).toInt(),
-                        y = (game.bee.y - game.beeRadius).toInt()
-                    )
-                )
-            }
-            game.pipePairs.forEach { pipePair ->
-                drawImage(
-                    image = pipeImage,
-                    dstOffset = IntOffset(
-                        x = (pipePair.x - game.pipeWidth / 2).toInt(),
-                        y = 0
-                    ),
-                    dstSize = IntSize(
-                        width = game.pipeWidth.toInt(),
-                        height = (pipePair.topHeight - PIPE_CAP_HEIGHT).toInt()
-                    )
-                )
-                drawImage(
-                    image = pipeCapImage,
-                    dstOffset = IntOffset(
-                        x = (pipePair.x - game.pipeWidth / 2).toInt(),
-                        y = (pipePair.topHeight - PIPE_CAP_HEIGHT).toInt()
-                    ),
-                    dstSize = IntSize(
-                        width = game.pipeWidth.toInt(),
-                        height = PIPE_CAP_HEIGHT.toInt()
-                    )
-                )
-                drawImage(
-                    image = pipeCapImage,
-                    dstOffset = IntOffset(
-                        x = (pipePair.x - game.pipeWidth / 2).toInt(),
-                        y = (pipePair.y + game.pipeGapSize / 2).toInt()
-                    ),
-                    dstSize = IntSize(
-                        width = game.pipeWidth.toInt(),
-                        height = PIPE_CAP_HEIGHT.toInt()
-                    )
-                )
-                drawImage(
-                    image = pipeImage,
-                    dstOffset = IntOffset(
-                        x = (pipePair.x - game.pipeWidth / 2).toInt(),
-                        y = (pipePair.y + game.pipeGapSize / 2 + PIPE_CAP_HEIGHT).toInt()
-                    ),
-                    dstSize = IntSize(
-                        width = game.pipeWidth.toInt(),
-                        height = (pipePair.bottomHeight - PIPE_CAP_HEIGHT).toInt()
-                    )
-                )
+                
+                ScoreBoard(game)
+                GameStatus(game, backgroundOffsetX)
             }
         }
-        ScoreBoard(game)
-        GameStatus(game, backgroundOffsetX)
     }
 }

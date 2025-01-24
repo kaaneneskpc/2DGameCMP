@@ -8,10 +8,22 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.kaaneneskpc.game.R
 import gamingcmp.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 @OptIn(ExperimentalResourceApi::class)
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class AudioPlayer(context: Context) {
+actual class AudioPlayer(context: Context) : KoinComponent {
+    private val settings: Settings by inject()
+
+    actual var isSoundEnabled: Boolean
+        get() = settings.isSoundEnabled
+        set(value) {
+            settings.isSoundEnabled = value
+            if (!value) {
+                stopAllSounds()
+            }
+        }
 
     private val loopingPlayer = ExoPlayer.Builder(context).build()
     private val mediaItems = soundResList.map {
@@ -29,18 +41,20 @@ actual class AudioPlayer(context: Context) {
         loopingPlayer.prepare()
     }
 
-
     actual fun playGameOverSound() {
+        if (!isSoundEnabled) return
         stopFallingSound()
         soundPool.play(gameOverSound, 1f, 1f, 1, 0, 1f)
     }
 
     actual fun playJumpSound() {
+        if (!isSoundEnabled) return
         stopFallingSound()
         soundPool.play(jumpSound, 1f, 1f, 1, 0, 1f)
     }
 
     actual fun playFallingSound() {
+        if (!isSoundEnabled) return
         fallingSoundId = soundPool.play(fallingSound, 1f, 1f, 1, 0, 1f)
     }
 
@@ -49,6 +63,7 @@ actual class AudioPlayer(context: Context) {
     }
 
     actual fun playGameSoundInLoop() {
+        if (!isSoundEnabled) return
         loopingPlayer.apply {
             stop()
             clearMediaItems()
@@ -74,5 +89,11 @@ actual class AudioPlayer(context: Context) {
             release()
         }
         soundPool.release()
+    }
+
+    private fun stopAllSounds() {
+        stopFallingSound()
+        stopGameSound()
+        loopingPlayer.stop()
     }
 }
