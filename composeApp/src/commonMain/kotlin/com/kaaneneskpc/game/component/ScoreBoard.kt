@@ -28,8 +28,6 @@ fun ScoreBoard(game: Game) {
                 fontSize = MaterialTheme.typography.displaySmall.fontSize,
                 fontFamily = ChewyFontFamily()
             )
-
-            SettingsButton()
             
             Text(
                 text = "${game.currentScore}",

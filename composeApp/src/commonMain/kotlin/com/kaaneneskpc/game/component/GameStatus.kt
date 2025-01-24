@@ -20,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,26 +48,33 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
                 modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
                 contentAlignment = Alignment.Center
             ) {
-                Button(
-                    modifier = Modifier.height(54.dp),
-                    shape = RoundedCornerShape(size = 20.dp),
-                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
-                    onClick = {
-                        game.start()
-                        spriteState.start()
-                    }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "START",
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontFamily = ChewyFontFamily()
-                    )
+                    Button(
+                        modifier = Modifier.height(54.dp),
+                        shape = RoundedCornerShape(size = 20.dp),
+                        colors = ButtonDefaults.buttonColors(contentColor = Color.White),
+                        onClick = {
+                            game.start()
+                            spriteState.start()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "START",
+                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                            fontFamily = ChewyFontFamily()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SettingsButton()
                 }
             }
         }
@@ -117,6 +123,8 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
                         fontFamily = ChewyFontFamily()
                     )
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                SettingsButton()
             }
         }
 
