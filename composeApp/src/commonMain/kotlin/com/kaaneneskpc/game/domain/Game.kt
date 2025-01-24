@@ -22,7 +22,7 @@ data class Game(
     val beeMaxVelocity: Float = if (platform == Platform.Android) 25f else if (platform == Platform.iOS) 20f else 20f,
     val pipeWidth: Float = 150f,
     val pipeVelocity: Float = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f,
-    val pipeGapSize: Float = if (platform == Platform.Android) 250f else 300f
+    val pipeGapSize: Float = 300f
 ) : KoinComponent {
     private val audioPlayer: AudioPlayer by inject()
     private val settings: ObservableSettings by inject()
@@ -74,6 +74,7 @@ data class Game(
     fun jump() {
         beeVelocity = beeJumpImpulse
         audioPlayer.playJumpSound()
+        isFallingSoundPlayed = false
     }
 
     fun cleanUp() {
@@ -132,7 +133,7 @@ data class Game(
         //When to play the falling sound
         if(beeVelocity > (beeMaxVelocity / 1.1)) {
             if(!isFallingSoundPlayed) {
-                audioPlayer.stopFallingSound()
+                audioPlayer.playFallingSound()
                 isFallingSoundPlayed = true
             }
         }

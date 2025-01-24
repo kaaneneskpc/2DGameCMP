@@ -10,6 +10,10 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		4A0BB5D22D442A8700000F77 /* falling.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A0BB5CE2D442A8700000F77 /* falling.wav */; };
+		4A0BB5D32D442A8700000F77 /* game_sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A0BB5CF2D442A8700000F77 /* game_sound.wav */; };
+		4A0BB5D42D442A8700000F77 /* game_over.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A0BB5D02D442A8700000F77 /* game_over.wav */; };
+		4A0BB5D52D442A8700000F77 /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A0BB5D12D442A8700000F77 /* jump.wav */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -17,6 +21,10 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		4A0BB5CE2D442A8700000F77 /* falling.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = falling.wav; path = iosApp/falling.wav; sourceTree = "<group>"; };
+		4A0BB5CF2D442A8700000F77 /* game_sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = game_sound.wav; path = iosApp/game_sound.wav; sourceTree = "<group>"; };
+		4A0BB5D02D442A8700000F77 /* game_over.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = game_over.wav; path = iosApp/game_over.wav; sourceTree = "<group>"; };
+		4A0BB5D12D442A8700000F77 /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = jump.wav; path = iosApp/jump.wav; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* GamingCMP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GamingCMP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,6 +60,10 @@
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
+				4A0BB5CE2D442A8700000F77 /* falling.wav */,
+				4A0BB5D02D442A8700000F77 /* game_over.wav */,
+				4A0BB5CF2D442A8700000F77 /* game_sound.wav */,
+				4A0BB5D12D442A8700000F77 /* jump.wav */,
 				AB1DB47929225F7C00F7AF9C /* Configuration */,
 				7555FF7D242A565900829871 /* iosApp */,
 				7555FF7C242A565900829871 /* Products */,
@@ -151,6 +163,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0BB5D22D442A8700000F77 /* falling.wav in Resources */,
+				4A0BB5D32D442A8700000F77 /* game_sound.wav in Resources */,
+				4A0BB5D42D442A8700000F77 /* game_over.wav in Resources */,
+				4A0BB5D52D442A8700000F77 /* jump.wav in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
 			);
