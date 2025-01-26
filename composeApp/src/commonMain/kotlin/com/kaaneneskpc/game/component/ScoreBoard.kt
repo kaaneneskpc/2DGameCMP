@@ -15,11 +15,14 @@ import kotlinx.coroutines.delay
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.draw.scale
+import com.kaaneneskpc.game.Platform
+import com.kaaneneskpc.game.getPlatform
 
 @Composable
 fun ScoreBoard(game: Game) {
     var showLevelUpAnimation by remember { mutableStateOf(false) }
     var previousLevel by remember { mutableStateOf(1) }
+    val platform = remember { getPlatform() }
     
     val scale by animateFloatAsState(
         targetValue = if (showLevelUpAnimation) 1.5f else 1f,
@@ -30,7 +33,7 @@ fun ScoreBoard(game: Game) {
     )
     
     LaunchedEffect(game.currentLevel) {
-        if (game.currentLevel > previousLevel) {
+        if (game.currentLevel > previousLevel && platform != Platform.Web) {
             showLevelUpAnimation = true
             delay(1000)
             showLevelUpAnimation = false

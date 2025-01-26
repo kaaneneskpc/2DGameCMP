@@ -254,7 +254,6 @@ data class Game(
         currentScore = 0
         currentLevel = 1
         updateLevelDifficulty()
-        status = GameStatus.Idle
     }
 
 }

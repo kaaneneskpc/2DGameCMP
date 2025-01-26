@@ -83,10 +83,21 @@ actual class AudioPlayer: KoinComponent {
     }
 
     private fun createAudioElement(fileName: String): Audio {
-        val path = "composeResources/gamingcmp.composeapp.generated.resources/files/$fileName"
+        val path = try {
+            "composeResources/gamingcmp.composeapp.generated.resources/files/$fileName".takeIf { it.isNotBlank() }
+                ?: throw IllegalArgumentException("Invalid audio file path")
+        } catch (e: Exception) {
+            println("Error creating audio path: ${e.message}")
+            fileName // Fallback to just the filename if path creation fails
+        }
+        
         return Audio(path).apply {
             onerror = { _, _, _, _, _ ->
                 println("Error loading audio file: $path")
+                null
+            }
+            onloadeddata = {
+                println("Audio file loaded successfully: $path")
                 null
             }
         }
