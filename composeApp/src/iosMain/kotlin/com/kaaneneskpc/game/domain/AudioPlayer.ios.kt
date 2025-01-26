@@ -1,86 +1,108 @@
 package com.kaaneneskpc.game.domain
 
 import kotlinx.cinterop.ExperimentalForeignApi
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import platform.AVFAudio.AVAudioEngine
 import platform.AVFAudio.AVAudioPlayer
 import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionCategoryPlayback
 import platform.AVFAudio.setActive
 import platform.Foundation.NSBundle
 import platform.Foundation.NSURL
-import platform.Foundation.NSURL.Companion.fileURLWithPath
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 @OptIn(ExperimentalForeignApi::class)
-actual class AudioPlayer {
-    private var audioPlayers: MutableMap<String, AVAudioPlayer?> =
-        mutableMapOf()
-    private var fallingSoundPlayer: AVAudioPlayer? = null
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+actual class AudioPlayer : KoinComponent {
+    private val settings: Settings by inject()
+    private val audioPlayers = mutableMapOf<String, AVAudioPlayer>()
+    private var loopingPlayer: AVAudioPlayer? = null
+
+    actual var isSoundEnabled: Boolean
+        get() = settings.isSoundEnabled
+        set(value) {
+            settings.isSoundEnabled = value
+            if (!value) {
+                stopAllSounds()
+            }
+        }
 
     init {
         // Configure the audio session for playback.
         val session = AVAudioSession.sharedInstance()
         session.setCategory(AVAudioSessionCategoryPlayback, error = null)
         session.setActive(true, error = null)
+        setupAudioPlayers()
+    }
+
+    private fun setupAudioPlayers() {
+        soundResList.forEach { fileName ->
+            val resourceName = fileName.substringAfterLast("/").substringBeforeLast(".")
+            val resourceType = fileName.substringAfterLast(".")
+            
+            val url = NSBundle.mainBundle.URLForResource(
+                resourceName,
+                resourceType
+            )
+            
+            url?.let {
+                try {
+                    val player = AVAudioPlayer(contentsOfURL = it, error = null)
+                    player.prepareToPlay()
+                    audioPlayers[fileName] = player
+                } catch (e: Exception) {
+                    println("Error loading audio file $fileName: $e")
+                }
+            } ?: println("Could not find audio file: $fileName")
+        }
     }
 
     actual fun playGameOverSound() {
-        stopFallingSound() // Stop any ongoing falling sound before playing the game over sound.
-        playSound("game_over")
+        if (!isSoundEnabled) return
+        stopFallingSound()
+        audioPlayers["files/game_over.wav"]?.play()
     }
 
     actual fun playJumpSound() {
-        stopFallingSound() // Stop any ongoing falling sound before playing the jump sound.
-        playSound("jump")
+        if (!isSoundEnabled) return
+        stopFallingSound()
+        audioPlayers["files/jump.wav"]?.play()
     }
 
     actual fun playFallingSound() {
-        // Start playing the falling sound and keep a reference for stopping later.
-        fallingSoundPlayer = playSound("falling")
+        if (!isSoundEnabled) return
+        audioPlayers["files/falling.wav"]?.play()
     }
 
     actual fun stopFallingSound() {
-        // Stop the falling sound if it's playing.
-        fallingSoundPlayer?.stop()
-        fallingSoundPlayer = null
+        audioPlayers["files/falling.wav"]?.stop()
+        audioPlayers["files/falling.wav"]?.currentTime = 0.0
     }
 
     actual fun playGameSoundInLoop() {
-        // Get the sound URL and create an AVAudioPlayer instance that loops indefinitely.
-        val url = getSoundURL("game_sound")
-        val player = url?.let { AVAudioPlayer(it, null) }
-        player?.numberOfLoops = -1 // Loop indefinitely
-        player?.prepareToPlay()
-        player?.play()
-        audioPlayers["game_sound"] = player
+        if (!isSoundEnabled) return
+        loopingPlayer = audioPlayers["files/game_sound.wav"]
+        loopingPlayer?.numberOfLoops = -1
+        loopingPlayer?.play()
     }
 
     actual fun stopGameSound() {
+        loopingPlayer?.stop()
+        loopingPlayer?.currentTime = 0.0
         playGameOverSound()
-        // Stop the looping game sound and remove it from the audio players map.
-        audioPlayers["game_sound"]?.stop()
-        audioPlayers["game_sound"] = null
     }
 
     actual fun release() {
-        // Stop all audio players and clear references to free resources.
-        audioPlayers.values.forEach { it?.stop() }
+        stopAllSounds()
         audioPlayers.clear()
-        fallingSoundPlayer?.stop()
-        fallingSoundPlayer = null
     }
 
-    private fun playSound(soundName: String): AVAudioPlayer? {
-        val url = getSoundURL(soundName)
-        val player = url?.let { AVAudioPlayer(it, error = null) }
-        player?.prepareToPlay()
-        player?.play()
-        audioPlayers[soundName] = player // Store the player for future management.
-        return player
-    }
-
-    private fun getSoundURL(resourceName: String): NSURL? {
-        val bundle = NSBundle.mainBundle()
-        val path = bundle.pathForResource(resourceName, "wav")
-        return path?.let { fileURLWithPath(it) }
+    private fun stopAllSounds() {
+        audioPlayers.values.forEach { player ->
+            player.stop()
+            player.currentTime = 0.0
+        }
+        loopingPlayer?.stop()
+        loopingPlayer?.currentTime = 0.0
     }
 }

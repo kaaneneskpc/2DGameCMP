@@ -1,22 +1,37 @@
 package com.kaaneneskpc.game.domain
 
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.w3c.dom.Audio
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class AudioPlayer {
+actual class AudioPlayer: KoinComponent {
+    private val settings: Settings by inject()
     private val audioElements = mutableMapOf<String, Audio>()
 
+    actual var isSoundEnabled: Boolean
+        get() = settings.isSoundEnabled
+        set(value) {
+            settings.isSoundEnabled = value
+            if (!value) {
+                stopAllSounds()
+            }
+        }
+
     actual fun playGameOverSound() {
+        if (!isSoundEnabled) return
         stopFallingSound()
         playSound(fileName = "game_over.wav")
     }
 
     actual fun playJumpSound() {
+        if (!isSoundEnabled) return
         stopFallingSound()
         playSound(fileName = "jump.wav")
     }
 
     actual fun playFallingSound() {
+        if (!isSoundEnabled) return
         playSound(fileName = "falling.wav")
     }
 
@@ -25,6 +40,7 @@ actual class AudioPlayer {
     }
 
     actual fun playGameSoundInLoop() {
+        if (!isSoundEnabled) return
         playSound(fileName = "game_sound.wav", loop = true)
     }
 
