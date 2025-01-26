@@ -128,6 +128,61 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
             }
         }
 
+        GameStatus.Completed -> {
+            Column(
+                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "🎉 TEBRİKLER! 🎉",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                    fontFamily = ChewyFontFamily()
+                )
+                Text(
+                    text = "Tüm Levelleri Tamamladınız!",
+                    color = Color.White,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontFamily = ChewyFontFamily()
+                )
+                Text(
+                    text = "SCORE: ${game.currentScore}",
+                    color = Color.White,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontFamily = ChewyFontFamily()
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    modifier = Modifier.height(54.dp),
+                    shape = RoundedCornerShape(size = 20.dp),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
+                    onClick = {
+                        game.restart()
+                        spriteState.start()
+                        scope.launch {
+                            backgroundOffsetX.snapTo(0f)
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "RESTART",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontFamily = ChewyFontFamily()
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                SettingsButton()
+            }
+        }
+
         GameStatus.Started -> {}
     }
 }

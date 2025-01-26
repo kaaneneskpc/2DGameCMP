@@ -44,6 +44,8 @@ data class Game(
         private set
     var bestScore by mutableStateOf(0)
         private set
+    var currentLevel by mutableStateOf(1)
+        private set
     private var isFallingSoundPlayed = false
 
     init {
@@ -106,7 +108,6 @@ data class Game(
     }
 
     fun updateGameProgress() {
-
         pipePairs.forEach { pipePair ->
             if (isCollision(pipePair)) {
                 gameOver()
@@ -114,10 +115,9 @@ data class Game(
             }
             if (!pipePair.scored && bee.x > pipePair.x + pipeWidth / 2) {
                 pipePair.scored = true
-                currentScore += 1
+                updateScore()
             }
         }
-
 
         if (bee.y < 0) {
             stopTheBee()
@@ -143,6 +143,20 @@ data class Game(
 
     private fun restartScore() {
         currentScore = 0
+        currentLevel = 1
+    }
+
+    private fun updateScore() {
+        currentScore += 1
+        if (currentScore % 5 == 0) {
+            if (currentLevel < 5) {
+                currentLevel += 1
+            } else if (currentLevel == 5) {
+                status = GameStatus.Completed
+                audioPlayer.stopGameSound()
+                saveScore()
+            }
+        }
     }
 
     private fun spawnPipes() {

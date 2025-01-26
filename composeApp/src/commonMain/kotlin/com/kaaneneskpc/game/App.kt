@@ -105,6 +105,7 @@ fun App() {
                 }
 
                 GameStatus.Idle -> {}
+                GameStatus.Completed -> {}
             }
         }
 

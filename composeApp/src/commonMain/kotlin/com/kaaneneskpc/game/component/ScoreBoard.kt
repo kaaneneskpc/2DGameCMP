@@ -36,5 +36,18 @@ fun ScoreBoard(game: Game) {
                 fontFamily = ChewyFontFamily()
             )
         }
+        
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 48.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "LEVEL ${game.currentLevel}",
+                fontWeight = FontWeight.Bold,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                fontFamily = ChewyFontFamily()
+            )
+        }
     }
 }
