@@ -66,15 +66,25 @@ fun ScoreBoard(game: Game) {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "LEVEL ${game.currentLevel}",
-                fontWeight = FontWeight.Bold,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontFamily = ChewyFontFamily(),
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .scale(scale)
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.scale(scale)
+            ) {
+                Text(
+                    text = "LEVEL ${game.currentLevel}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontFamily = ChewyFontFamily(),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                if (showLevelUpAnimation) {
+                    Text(
+                        text = " 🎉",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize
+                    )
+                }
+            }
         }
     }
 }

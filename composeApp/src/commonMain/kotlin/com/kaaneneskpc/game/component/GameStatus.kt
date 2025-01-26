@@ -74,7 +74,7 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    SettingsButton()
+                    SettingsButton(game)
                 }
             }
         }
@@ -124,7 +124,7 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                SettingsButton()
+                SettingsButton(game)
             }
         }
 
@@ -179,7 +179,7 @@ fun GameStatus(game: Game, backgroundOffsetX: Animatable<Float, AnimationVector1
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                SettingsButton()
+                SettingsButton(game)
             }
         }
 

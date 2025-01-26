@@ -248,4 +248,13 @@ data class Game(
         bee = bee.copy(y = 0f)
     }
 
+    fun clearData() {
+        settings.putInt(SCORE_KEY, 0)
+        bestScore = 0
+        currentScore = 0
+        currentLevel = 1
+        updateLevelDifficulty()
+        status = GameStatus.Idle
+    }
+
 }
