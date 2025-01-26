@@ -65,19 +65,32 @@ fun SettingsButton() {
                     )
                     .padding(8.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text("Sound", color = Color.White)
-                    Switch(
-                        checked = isSoundEnabled,
-                        onCheckedChange = { enabled ->
-                            isSoundEnabled = enabled
-                            audioPlayer.isSoundEnabled = enabled
-                        }
-                    )
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text("Sound", color = Color.White)
+                        Switch(
+                            checked = isSoundEnabled,
+                            onCheckedChange = { enabled ->
+                                isSoundEnabled = enabled
+                                audioPlayer.isSoundEnabled = enabled
+                            }
+                        )
+                    }
+                    Button(
+                        modifier = Modifier
+                            .background(
+                                color = Color.Red.copy(alpha = 0.7f),
+                                shape = RoundedCornerShape(8.dp)
+                            ).padding(top = 4.dp),
+                        onClick = {  }
+                    ) {
+
+                    }
                 }
+
             }
         }
     }

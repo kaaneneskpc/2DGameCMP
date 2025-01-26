@@ -9,6 +9,12 @@ import com.russhwolf.settings.ObservableSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 
 const val SCORE_KEY = "score"
 
@@ -16,13 +22,14 @@ data class Game(
     val platform: Platform,
     val screenWidth: Int = 0,
     val screenHeight: Int = 0,
-    val gravity: Float = if (platform == Platform.Android) 0.8f else if (platform == Platform.iOS) 0.8f else 0.25f,
+    var gravity: Float = if (platform == Platform.Android) 0.8f else if (platform == Platform.iOS) 0.8f else 0.25f,
     val beeRadius: Float = 30f,
     val beeJumpImpulse: Float = if (platform == Platform.Android) -12f else if (platform == Platform.iOS) -12f else -8f,
     val beeMaxVelocity: Float = if (platform == Platform.Android) 25f else if (platform == Platform.iOS) 20f else 20f,
     val pipeWidth: Float = 150f,
-    val pipeVelocity: Float = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f,
-    val pipeGapSize: Float = 300f
+    var pipeVelocity: Float = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f,
+    var pipeGapSize: Float = 300f,
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 ) : KoinComponent {
     private val audioPlayer: AudioPlayer by inject()
     private val settings: ObservableSettings by inject()
@@ -81,6 +88,7 @@ data class Game(
 
     fun cleanUp() {
         audioPlayer.release()
+        scope.cancel()
     }
 
     private fun saveScore() {
@@ -144,17 +152,49 @@ data class Game(
     private fun restartScore() {
         currentScore = 0
         currentLevel = 1
+        updateLevelDifficulty()
     }
 
     private fun updateScore() {
         currentScore += 1
-        if (currentScore % 5 == 0) {
+        if (currentScore % 1 == 0) {
             if (currentLevel < 5) {
                 currentLevel += 1
+                updateLevelDifficulty()
             } else if (currentLevel == 5) {
                 status = GameStatus.Completed
                 audioPlayer.stopGameSound()
                 saveScore()
+            }
+        }
+    }
+
+    private fun updateLevelDifficulty() {
+        when (currentLevel) {
+            1 -> {
+                gravity = if (platform == Platform.Android) 0.8f else if (platform == Platform.iOS) 0.8f else 0.25f
+                pipeVelocity = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f
+                pipeGapSize = 300f
+            }
+            2 -> {
+                gravity = if (platform == Platform.Android) 0.9f else if (platform == Platform.iOS) 0.9f else 0.3f
+                pipeVelocity = if (platform == Platform.Android) 6f else if (platform == Platform.iOS) 8f else 3f
+                pipeGapSize = 275f
+            }
+            3 -> {
+                gravity = if (platform == Platform.Android) 1f else if (platform == Platform.iOS) 1f else 0.35f
+                pipeVelocity = if (platform == Platform.Android) 7f else if (platform == Platform.iOS) 9f else 3.5f
+                pipeGapSize = 250f
+            }
+            4 -> {
+                gravity = if (platform == Platform.Android) 1.1f else if (platform == Platform.iOS) 1.1f else 0.4f
+                pipeVelocity = if (platform == Platform.Android) 8f else if (platform == Platform.iOS) 10f else 4f
+                pipeGapSize = 225f
+            }
+            5 -> {
+                gravity = if (platform == Platform.Android) 1.2f else if (platform == Platform.iOS) 1.2f else 0.45f
+                pipeVelocity = if (platform == Platform.Android) 9f else if (platform == Platform.iOS) 11f else 4.5f
+                pipeGapSize = 200f
             }
         }
     }
