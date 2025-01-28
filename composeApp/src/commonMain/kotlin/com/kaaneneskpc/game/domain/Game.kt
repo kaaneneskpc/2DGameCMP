@@ -157,11 +157,11 @@ data class Game(
 
     private fun updateScore() {
         currentScore += 1
-        if (currentScore % 1 == 0) {
-            if (currentLevel < 3) {
+        if (currentScore % 10 == 0) {
+            if (currentLevel < 10) {
                 currentLevel += 1
                 updateLevelDifficulty()
-            } else if (currentLevel == 3) {
+            } else if (currentLevel == 10) {
                 status = GameStatus.Completed
                 audioPlayer.stopGameSoundWithOutGameOver()
                 saveScore()
