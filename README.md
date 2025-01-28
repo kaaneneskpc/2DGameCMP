@@ -8,13 +8,22 @@ This project is a multiplatform game that demonstrates the power of Kotlin Multi
 
 ## App Contents
 
-### Android
-
-https://github.com/user-attachments/assets/617f5172-ddf5-45a3-931b-4f35130ed561
-
-### IOS
-
-https://github.com/user-attachments/assets/a2c88d2c-6930-4e96-997e-ae1cfa0eb4db
+<table>
+<tr>
+<td width="50%">
+<h3 align="center">Android</h3>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/617f5172-ddf5-45a3-931b-4f35130ed561" width="400"/>
+</p>
+</td>
+<td width="50%">
+<h3 align="center">iOS</h3>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a2c88d2c-6930-4e96-997e-ae1cfa0eb4db" width="400"/>
+</p>
+</td>
+</tr>
+</table>
 
 ### Desktop
 
