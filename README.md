@@ -111,6 +111,13 @@ git clone https://github.com/yourusername/2DGameCMP.git
 - Include tests for new features
 - Update documentation as needed
 
+### RoadMap
+- Different obstacles and challenges in each level
+- Achievement System
+- Character Customization
+- Optimization Performance
+- Localization
+
 ## Contact
 
 **Kaan Enes Kapıcı**
