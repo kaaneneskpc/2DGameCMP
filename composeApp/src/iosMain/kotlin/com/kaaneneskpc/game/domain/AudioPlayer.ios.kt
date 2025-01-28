@@ -92,6 +92,11 @@ actual class AudioPlayer : KoinComponent {
         playGameOverSound()
     }
 
+    actual  fun stopGameSoundWithOutGameOver() {
+        loopingPlayer?.stop()
+        loopingPlayer?.currentTime = 0.0
+    }
+
     actual fun release() {
         stopAllSounds()
         audioPlayers.clear()

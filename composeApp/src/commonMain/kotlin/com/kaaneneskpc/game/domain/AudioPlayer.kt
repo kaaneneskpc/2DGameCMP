@@ -8,6 +8,7 @@ expect class AudioPlayer {
     fun stopFallingSound()
     fun playGameSoundInLoop()
     fun stopGameSound()
+    fun stopGameSoundWithOutGameOver()
     fun release()
 }
 

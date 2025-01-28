@@ -58,7 +58,7 @@ fun SettingsButton(game: Game) {
             exit = fadeOut() + slideOutVertically { -it },
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .offset(y = 45.dp)
+                .offset(y = 100.dp)
                 .zIndex(2f)
         ) {
             Box(

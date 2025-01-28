@@ -26,9 +26,9 @@ data class Game(
     val beeRadius: Float = 30f,
     val beeJumpImpulse: Float = if (platform == Platform.Android) -12f else if (platform == Platform.iOS) -12f else -8f,
     val beeMaxVelocity: Float = if (platform == Platform.Android) 25f else if (platform == Platform.iOS) 20f else 20f,
-    val pipeWidth: Float = 150f,
+    val pipeWidth: Float = 100f,
     var pipeVelocity: Float = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f,
-    var pipeGapSize: Float = 300f,
+    var pipeGapSize: Float = 500f,
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 ) : KoinComponent {
     private val audioPlayer: AudioPlayer by inject()
@@ -158,12 +158,12 @@ data class Game(
     private fun updateScore() {
         currentScore += 1
         if (currentScore % 1 == 0) {
-            if (currentLevel < 5) {
+            if (currentLevel < 3) {
                 currentLevel += 1
                 updateLevelDifficulty()
-            } else if (currentLevel == 5) {
+            } else if (currentLevel == 3) {
                 status = GameStatus.Completed
-                audioPlayer.stopGameSound()
+                audioPlayer.stopGameSoundWithOutGameOver()
                 saveScore()
             }
         }
@@ -174,27 +174,27 @@ data class Game(
             1 -> {
                 gravity = if (platform == Platform.Android) 0.8f else if (platform == Platform.iOS) 0.8f else 0.25f
                 pipeVelocity = if (platform == Platform.Android) 5f else if (platform == Platform.iOS) 7f else 2.5f
-                pipeGapSize = 300f
+                pipeGapSize = 500f
             }
             2 -> {
                 gravity = if (platform == Platform.Android) 0.9f else if (platform == Platform.iOS) 0.9f else 0.3f
                 pipeVelocity = if (platform == Platform.Android) 6f else if (platform == Platform.iOS) 8f else 3f
-                pipeGapSize = 275f
+                pipeGapSize = 450f
             }
             3 -> {
                 gravity = if (platform == Platform.Android) 1f else if (platform == Platform.iOS) 1f else 0.35f
                 pipeVelocity = if (platform == Platform.Android) 7f else if (platform == Platform.iOS) 9f else 3.5f
-                pipeGapSize = 250f
+                pipeGapSize = 400f
             }
             4 -> {
                 gravity = if (platform == Platform.Android) 1.1f else if (platform == Platform.iOS) 1.1f else 0.4f
                 pipeVelocity = if (platform == Platform.Android) 8f else if (platform == Platform.iOS) 10f else 4f
-                pipeGapSize = 225f
+                pipeGapSize = 350f
             }
             5 -> {
                 gravity = if (platform == Platform.Android) 1.2f else if (platform == Platform.iOS) 1.2f else 0.45f
                 pipeVelocity = if (platform == Platform.Android) 9f else if (platform == Platform.iOS) 11f else 4.5f
-                pipeGapSize = 200f
+                pipeGapSize = 300f
             }
         }
     }

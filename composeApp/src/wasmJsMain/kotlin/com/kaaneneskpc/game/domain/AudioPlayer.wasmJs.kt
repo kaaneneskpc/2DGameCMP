@@ -49,6 +49,10 @@ actual class AudioPlayer: KoinComponent {
         stopSound(fileName = "game_sound.wav")
     }
 
+    actual fun stopGameSoundWithOutGameOver() {
+        stopSound(fileName = "game_sound.wav")
+    }
+
     actual fun release() {
         stopAllSounds()
         audioElements.clear()

@@ -82,6 +82,11 @@ actual class AudioPlayer(context: Context) : KoinComponent {
         playGameOverSound()
     }
 
+    actual fun stopGameSoundWithOutGameOver() {
+        loopingPlayer.stop()
+        loopingPlayer.clearMediaItems()
+    }
+
     actual fun release() {
         loopingPlayer.apply {
             stop()
