@@ -6,6 +6,8 @@ A cross-platform 2D game built using Kotlin Multiplatform and Compose Multiplatf
 
 This project is a multiplatform game that demonstrates the power of Kotlin Multiplatform and Compose Multiplatform for game development. The game provides a unified codebase that runs across multiple platforms while maintaining platform-specific optimizations.
 
+## App Contents
+
 ## Tech Stack
 
 - **Kotlin Multiplatform**: For sharing code across platforms
@@ -66,8 +68,8 @@ git clone https://github.com/yourusername/2DGameCMP.git
 3. For different platforms:
    - **Android**: Run the android configuration
    - **iOS**: Open the Xcode project in the iosApp directory
-   - **Desktop**: Run the desktop configuration
-   - **Web**: Run the browser configuration
+   - **Desktop**: Run the desktop configuration (Gradle -> Execute Gradle Task -> composeApp:run)
+   - **Web**: Run the browser configuration (Gradle -> Execute Gradle Task -> wasmJsBrowserRun)
 
 ## Contribution Guide
 
@@ -85,9 +87,10 @@ git clone https://github.com/yourusername/2DGameCMP.git
 
 ## Contact
 
-Kaan Enes Kapıcı
-
-Project Link: [https://github.com/yourusername/2DGameCMP](https://github.com/yourusername/2DGameCMP)
+**Kaan Enes Kapıcı**
+- LinkedIn: [Kaan Enes Kapıcı](https://www.linkedin.com/in/kaaneneskpc/)
+- GitHub: [@kaaneneskpc](https://github.com/kaaneneskpc)
+- Email: kaaneneskpc1@gmail.com
 
 Feel free to reach out if you have any questions or suggestions!
 
